@@ -1,0 +1,432 @@
+{
+	"info": {
+		"_postman_id": "2455bfb2-1286-42c5-a864-c452252072a7",
+		"name": "Reqres",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18178139"
+	},
+	"item": [
+		{
+			"name": "Sanity Testing",
+			"item": [
+				{
+					"name": "Users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response time is within an acceptable range\", function () {\r",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Content-Type header is application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Data array should have correct structure\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData.data).to.be.an('array');\r",
+									"    responseData.data.forEach(function(user) {\r",
+									"        pm.expect(user).to.have.property('id').that.is.a('number');\r",
+									"        pm.expect(user).to.have.property('email').that.is.a('string');\r",
+									"        pm.expect(user).to.have.property('first_name').that.is.a('string');\r",
+									"        pm.expect(user).to.have.property('last_name').that.is.a('string');\r",
+									"        pm.expect(user).to.have.property('avatar').that.is.a('string');\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Verify the presence and format of the support object\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.support).to.exist.and.to.be.an('object');\r",
+									"    pm.expect(responseData.support.url).to.be.a('string');\r",
+									"    pm.expect(responseData.support.text).to.be.a('string');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{reqres}}/api/users",
+							"host": [
+								"{{reqres}}"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						},
+						"description": "This endpoint makes an HTTP GET request to retrieve a list of users. The response will have a status code, response time, content type, data array structure, and support object presence and format. Comments have been added to describe the different topics of assertions used, such as status code, response time, content type, data array structure, and support object presence and format."
+					},
+					"response": []
+				},
+				{
+					"name": "A single user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response time is within an acceptable range\", function () {\r",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Validate the data object schema - id, email, first_name, last_name, and avatar fields\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData.data).to.be.an('object');\r",
+									"    pm.expect(responseData.data.id).to.exist.and.to.be.a('number');\r",
+									"    pm.expect(responseData.data.email).to.exist.and.to.be.a('string');\r",
+									"    pm.expect(responseData.data.first_name).to.exist.and.to.be.a('string');\r",
+									"    pm.expect(responseData.data.last_name).to.exist.and.to.be.a('string');\r",
+									"    pm.expect(responseData.data.avatar).to.exist.and.to.be.a('string');\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Support object schema includes url and text fields\", function () {\r",
+									"  const responseData = pm.response.json();\r",
+									"  \r",
+									"  pm.expect(responseData.support).to.exist;\r",
+									"  pm.expect(responseData.support.url).to.be.a('string');\r",
+									"  pm.expect(responseData.support.text).to.be.a('string');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{reqres}}/api/users?id=2",
+							"host": [
+								"{{reqres}}"
+							],
+							"path": [
+								"api",
+								"users"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 204\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response has the required Content-Type header\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"text/xml\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response body is null or empty\", function () {\r",
+									"    const responseData = xml2Json(pm.response.text());\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.null;\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response body schema validation is performed\", function () {\r",
+									"    const responseData = xml2Json(pm.response.text());\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.null;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{reqres}}/api/users/214",
+							"host": [
+								"{{reqres}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"214"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response has the required fields\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.updatedAt).to.exist;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{reqres}}/api/users/214",
+							"host": [
+								"{{reqres}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"214"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 201\", function () {\r",
+									"    pm.expect(pm.response.code).to.equal(201);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response has the required fields - name, job, id, and createdAt\", function () {\r",
+									"  const responseData = pm.response.json();\r",
+									"  \r",
+									"  pm.expect(responseData).to.be.an('object');\r",
+									"  pm.expect(responseData).to.have.property('name');\r",
+									"  pm.expect(responseData).to.have.property('job');\r",
+									"  pm.expect(responseData).to.have.property('id');\r",
+									"  pm.expect(responseData).to.have.property('createdAt');\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Name and job fields are non-empty strings\", function () {\r",
+									"  const responseData = pm.response.json();\r",
+									"  \r",
+									"  pm.expect(responseData).to.be.an('object');\r",
+									"  pm.expect(responseData.name).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Name should not be empty\");\r",
+									"  pm.expect(responseData.job).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Job should not be empty\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"ID is in a valid format\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData.id).to.match(/[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[8|9|a|b][a-f0-9]{3}-[a-f0-9]{12}/);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"CreatedAt is in a valid date format\", function () {\r",
+									"  const responseData = pm.response.json();\r",
+									"  \r",
+									"  pm.expect(responseData.createdAt).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.\\d{3}Z$/);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Shasidhar\",\r\n    \"job\": \"Engineer\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{reqres}}/api/users",
+							"host": [
+								"{{reqres}}"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Regression Testing",
+			"item": [
+				{
+					"name": "Get page",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    // Check if the response status code is 200\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is within an acceptable range\", function () {\r",
+									"    // Check if the response time is below 200ms\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Validate the response schema for the presence of required fields\", function () {\r",
+									"    // Check if the response contains the required fields: page, per_page, total, total_pages, data, and support\r",
+									"    const responseData = pm.response.json();\r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData).to.have.property('page', \"Response should contain 'page' property\");\r",
+									"    pm.expect(responseData).to.have.property('per_page', \"Response should contain 'per_page' property\");\r",
+									"    pm.expect(responseData).to.have.property('total', \"Response should contain 'total' property\");\r",
+									"    pm.expect(responseData).to.have.property('total_pages', \"Response should contain 'total_pages' property\");\r",
+									"    pm.expect(responseData).to.have.property('data', \"Response should contain 'data' property\");\r",
+									"    pm.expect(responseData).to.have.property('support', \"Response should contain 'support' property\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Data array contains the expected number of elements\", function () {\r",
+									"    // Check if the 'data' array contains exactly one element\r",
+									"    const responseData = pm.response.json();\r",
+									"    pm.expect(responseData.data).to.be.an('array').that.has.lengthOf(1, \"Data array should have exactly one element\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Id is a non-negative integer\", function () {\r",
+									"\r",
+									"    // Check if the 'id' in each user object is a non-negative integer\r",
+									"    const responseData = pm.response.json();\r",
+									"    pm.expect(responseData.data).to.be.an('array');\r",
+									"    responseData.data.forEach(function(user) {\r",
+									"        pm.expect(user.id).to.be.a('number').and.to.be.at.least(0, \"Id should be a non-negative integer\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Email is in a valid email format\", function () {\r",
+									"    // Check if the 'email' in each user object is in a valid email format\r",
+									"    const responseData = pm.response.json();\r",
+									"    pm.expect(responseData.data).to.be.an('array');\r",
+									"    responseData.data.forEach(function(user) {\r",
+									"        pm.expect(user.email).to.be.a('string').and.to.match(/^[\\w-]+(\\.[\\w-]+)*@([\\w-]+\\.)+[a-zA-Z]{2,7}$/, \"Email should be in a valid format\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"First name and last name are non-empty strings\", function () {\r",
+									"    // Check if the 'first_name' and 'last_name' in each user object are non-empty strings\r",
+									"    const responseData = pm.response.json();\r",
+									"    pm.expect(responseData.data).to.be.an('array');\r",
+									"    responseData.data.forEach(function(user) {\r",
+									"        pm.expect(user.first_name).to.be.a('string').and.to.have.lengthOf.at.least(1, \"First name should not be empty\");\r",
+									"        pm.expect(user.last_name).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Last name should not be empty\");\r",
+									"    });\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{reqres}}/api/users?page=0",
+							"host": [
+								"{{reqres}}"
+							],
+							"path": [
+								"api",
+								"users"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "reqres",
+			"value": "https://reqres.in"
+		}
+	]
+}
